@@ -47,7 +47,15 @@ class MyHomePage extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
-          children: countersSet.map((counter) => BlueButton(counter)).toList(),
+          children: countersSet
+              .map((counter) => ElevatedButton(
+                    onPressed: counter.increment,
+                    onLongPress: counter.decrement,
+                    child: Column(
+                      children: [Text(counter.id), Text('${counter.count}')],
+                    ),
+                  ))
+              .toList(),
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -58,21 +66,6 @@ class MyHomePage extends StatelessWidget {
         onPressed: countersModel.createCounter,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
-      ),
-    );
-  }
-}
-
-class BlueButton extends StatelessWidget {
-  const BlueButton(this.counter, {Key? key}) : super(key: key);
-  final Counter counter;
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: counter.increment,
-      onLongPress: counter.decrement,
-      child: Column(
-        children: [Text(counter.id), Text('${counter.count}')],
       ),
     );
   }
