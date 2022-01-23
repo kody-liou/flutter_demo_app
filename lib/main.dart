@@ -37,7 +37,7 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var countersId = context.select<CountersModel, List<String>>((model) {
-      var counters = model.countersMap.values.toList();
+      var counters = model.itemsMap.values.toList();
       counters.sort((a, b) => a.count.compareTo(b.count));
       return counters.map((counter) => counter.id).toList();
     });
@@ -53,7 +53,7 @@ class MyHomePage extends StatelessWidget {
           children: countersId
               .map((id) => Selector<CountersModel, Counter>(
                   selector: (context, countersModel) =>
-                      countersModel.countersMap[id]!,
+                      countersModel.itemsMap[id]!,
                   builder: (context, counter, child) {
                     print('build ${counter.id}');
                     return ElevatedButton(
