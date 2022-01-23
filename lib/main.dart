@@ -47,7 +47,7 @@ class MyHomePage extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
-          children: countersSet.map((counter) => Count(counter)).toList(),
+          children: countersSet.map((counter) => BlueButton(counter)).toList(),
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -63,12 +63,15 @@ class MyHomePage extends StatelessWidget {
   }
 }
 
-class Count extends StatelessWidget {
-  const Count(this.counter, {Key? key}) : super(key: key);
+class BlueButton extends StatelessWidget {
+  const BlueButton(this.counter, {Key? key}) : super(key: key);
   final Counter counter;
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-        onPressed: counter.increment, child: Text('${counter.count}'));
+      onPressed: counter.increment,
+      onLongPress: counter.decrement,
+      child: Text('${counter.count}'),
+    );
   }
 }

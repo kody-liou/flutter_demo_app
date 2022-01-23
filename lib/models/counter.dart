@@ -9,6 +9,10 @@ class Counter {
     count++;
   }
 
+  void decrement() {
+    count--;
+  }
+
   Counter(this.id, this.count);
 }
 
