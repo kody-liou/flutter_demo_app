@@ -11,7 +11,7 @@ void main() {
     /// can use [MyApp] while mocking the providers
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => Counter()),
+        ChangeNotifierProvider(create: (_) => CountersModel()),
       ],
       child: const MyApp(),
     ),
@@ -36,6 +36,9 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var countersSet = context.select<CountersModel, Set<Counter>>(
+        (model) => model.countersMap.values.toSet());
+    var countersModel = context.read<CountersModel>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Example'),
@@ -44,16 +47,7 @@ class MyHomePage extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const <Widget>[
-            Text('You have pushed the button this many times:'),
-
-            /// Extracted as a separate widget for performance optimization.
-            /// As a separate widget, it will rebuild independently from [MyHomePage].
-            ///
-            /// This is totally optional (and rarely needed).
-            /// Similarly, we could also use [Consumer] or [Selector].
-            Count(),
-          ],
+          children: countersSet.map((counter) => Count(counter)).toList(),
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -61,7 +55,7 @@ class MyHomePage extends StatelessWidget {
 
         /// Calls `context.read` instead of `context.watch` so that it does not rebuild
         /// when [Counter] changes.
-        onPressed: () => context.read<Counter>().increment(),
+        onPressed: countersModel.createCounter,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
@@ -70,15 +64,11 @@ class MyHomePage extends StatelessWidget {
 }
 
 class Count extends StatelessWidget {
-  const Count({Key? key}) : super(key: key);
-
+  const Count(this.counter, {Key? key}) : super(key: key);
+  final Counter counter;
   @override
   Widget build(BuildContext context) {
-    return Text(
-
-        /// Calls `context.watch` to make [Count] rebuild when [Counter] changes.
-        '${context.watch<Counter>().count}',
-        key: const Key('counterState'),
-        style: Theme.of(context).textTheme.headline4);
+    return ElevatedButton(
+        onPressed: counter.increment, child: Text('${counter.count}'));
   }
 }

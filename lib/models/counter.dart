@@ -1,20 +1,23 @@
 import 'package:flutter/foundation.dart';
+import 'package:nanoid/nanoid.dart';
 
-/// Mix-in [DiagnosticableTreeMixin] to have access to [debugFillProperties] for the devtool
-class Counter with ChangeNotifier, DiagnosticableTreeMixin {
-  int _count = 0;
-
-  int get count => _count;
+class Counter {
+  String id;
+  int count;
 
   void increment() {
-    _count++;
-    notifyListeners();
+    count++;
   }
 
-  /// Makes `Counter` readable inside the devtools by listing all of its properties
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(IntProperty('count', count));
+  Counter(this.id, this.count);
+}
+
+class CountersModel with ChangeNotifier {
+  Map<String, Counter> countersMap = {};
+
+  void createCounter() {
+    var id = nanoid();
+    countersMap[id] = Counter(id, 0);
+    notifyListeners();
   }
 }
