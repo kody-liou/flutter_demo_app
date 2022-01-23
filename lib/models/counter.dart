@@ -5,15 +5,11 @@ class Counter {
   String id;
   int count;
 
-  void increment() {
-    count++;
-  }
-
-  void decrement() {
-    count--;
-  }
-
   Counter(this.id, this.count);
+
+  Counter clone() {
+    return Counter(id, count);
+  }
 }
 
 class CountersModel with ChangeNotifier {
@@ -22,6 +18,18 @@ class CountersModel with ChangeNotifier {
   void createCounter() {
     var id = nanoid();
     countersMap[id] = Counter(id, 0);
+    notifyListeners();
+  }
+
+  void increment(Counter counter) {
+    counter.count++;
+    countersMap[counter.id] = counter.clone();
+    notifyListeners();
+  }
+
+  void decrement(Counter counter) {
+    counter.count--;
+    countersMap[counter.id] = counter.clone();
     notifyListeners();
   }
 }

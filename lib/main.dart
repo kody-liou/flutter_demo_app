@@ -36,8 +36,11 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var countersSet = context.select<CountersModel, Set<Counter>>(
-        (model) => model.countersMap.values.toSet());
+    var countersId = context.select<CountersModel, List<String>>((model) {
+      var counters = model.countersMap.values.toList();
+      counters.sort((a, b) => a.count.compareTo(b.count));
+      return counters.map((counter) => counter.id).toList();
+    });
     var countersModel = context.read<CountersModel>();
     return Scaffold(
       appBar: AppBar(
@@ -47,13 +50,17 @@ class MyHomePage extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
-          children: countersSet
-              .map((counter) => Selector<CountersModel, Counter>(
-                  selector: (_, __) => counter,
-                  builder: (_, __, ___) {
+          children: countersId
+              .map((id) => Selector<CountersModel, Counter>(
+                  selector: (context, countersModel) =>
+                      countersModel.countersMap[id]!,
+                  builder: (context, counter, child) {
+                    print('build ${counter.id}');
                     return ElevatedButton(
-                      onPressed: counter.increment,
-                      onLongPress: counter.decrement,
+                      onPressed: () =>
+                          context.read<CountersModel>().increment(counter),
+                      onLongPress: () =>
+                          context.read<CountersModel>().decrement(counter),
                       child: Column(
                         children: [Text(counter.id), Text('${counter.count}')],
                       ),
