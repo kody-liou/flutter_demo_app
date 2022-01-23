@@ -48,13 +48,17 @@ class MyHomePage extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: countersSet
-              .map((counter) => ElevatedButton(
-                    onPressed: counter.increment,
-                    onLongPress: counter.decrement,
-                    child: Column(
-                      children: [Text(counter.id), Text('${counter.count}')],
-                    ),
-                  ))
+              .map((counter) => Selector<CountersModel, Counter>(
+                  selector: (_, __) => counter,
+                  builder: (_, __, ___) {
+                    return ElevatedButton(
+                      onPressed: counter.increment,
+                      onLongPress: counter.decrement,
+                      child: Column(
+                        children: [Text(counter.id), Text('${counter.count}')],
+                      ),
+                    );
+                  }))
               .toList(),
         ),
       ),
