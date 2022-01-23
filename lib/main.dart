@@ -71,7 +71,9 @@ class BlueButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: counter.increment,
       onLongPress: counter.decrement,
-      child: Text('${counter.count}'),
+      child: Column(
+        children: [Text(counter.id), Text('${counter.count}')],
+      ),
     );
   }
 }
