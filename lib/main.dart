@@ -53,15 +53,17 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void swapTiles() {
     setState(() {
-      tiles.insert(1, tiles.removeAt(0));
+      tiles.insert(tiles.length - 1, tiles.removeAt(0));
     });
   }
 
   @override
   void initState() {
     tiles = [
-      const StatelessTile(color: Colors.blue),
-      const StatelessTile(),
+      // const StatelessTile(color: Colors.blue),
+      // const StatelessTile(),
+      const StatefulTile(color: Colors.red),
+      const StatefulTile(color: Colors.pink),
     ];
     super.initState();
   }
@@ -103,6 +105,26 @@ class StatelessTile extends StatelessWidget {
       aspectRatio: 1,
       child: Container(
         color: color,
+      ),
+    );
+  }
+}
+
+class StatefulTile extends StatefulWidget {
+  const StatefulTile({Key? key, this.color = Colors.white}) : super(key: key);
+  final Color color;
+
+  @override
+  _StatefulTileState createState() => _StatefulTileState();
+}
+
+class _StatefulTileState extends State<StatefulTile> {
+  @override
+  Widget build(BuildContext context) {
+    return AspectRatio(
+      aspectRatio: 1,
+      child: Container(
+        color: widget.color,
       ),
     );
   }
