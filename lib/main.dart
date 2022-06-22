@@ -51,6 +51,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  bool show = true;
   late InfiniteScrollController scrollController;
 
   void _incrementCounter() {
@@ -112,18 +113,33 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
             ),
-            SizedBox(
-              height: 200,
-              child: InfiniteScroll(controller: scrollController),
-            )
+            show
+                ? SizedBox(
+                    height: 200,
+                    child: InfiniteScroll(controller: scrollController),
+                  )
+                : Container()
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      floatingActionButton: Column(
+        children: [
+          FloatingActionButton(
+            onPressed: _incrementCounter,
+            tooltip: 'Increment',
+            child: const Icon(Icons.add),
+          ),
+          FloatingActionButton(
+            onPressed: () {
+              setState(() {
+                show = !show;
+              });
+            },
+            tooltip: 'Increment',
+            child: const Icon(Icons.plumbing),
+          )
+        ],
+      ),
     );
   }
 }

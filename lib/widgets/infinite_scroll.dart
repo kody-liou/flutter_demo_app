@@ -31,7 +31,7 @@ class _InfiniteScrollState extends State<InfiniteScroll> {
     super.initState();
     widget.controller.addListener(() {
       setState(() {
-        items = [...widget.controller.items];
+        // items = [...widget.controller.items];
       });
     });
   }
