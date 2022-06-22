@@ -52,7 +52,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   bool show = true;
-  late InfiniteScrollController scrollController;
+  late final InfiniteScrollController scrollController =
+      InfiniteScrollController();
 
   void _incrementCounter() {
     scrollController.addItem(const Text('Hi'));
@@ -69,7 +70,12 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    scrollController = InfiniteScrollController();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    scrollController.dispose();
   }
 
   @override
