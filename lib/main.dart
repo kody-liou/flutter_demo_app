@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './widgets/infinite_scroll.dart';
 
 void main() {
   runApp(const MyApp());
@@ -50,8 +51,10 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  late InfiniteScrollController scrollController;
 
   void _incrementCounter() {
+    scrollController.addItem(const Text('Hi'));
     setState(() {
       // This call to setState tells the Flutter framework that something has
       // changed in this State, which causes it to rerun the build method below
@@ -60,6 +63,12 @@ class _MyHomePageState extends State<MyHomePage> {
       // called again, and so nothing would appear to happen.
       _counter++;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    scrollController = InfiniteScrollController();
   }
 
   @override
@@ -103,6 +112,10 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
             ),
+            SizedBox(
+              height: 200,
+              child: InfiniteScroll(controller: scrollController),
+            )
           ],
         ),
       ),
