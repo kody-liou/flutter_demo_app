@@ -1,0 +1,187 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Current Device",
+      "request": "launch",
+      "type": "dart"
+    },
+    {
+      "name": "Chrome ( local-api )",
+      "program": "lib/main.dart",
+      "request": "launch",
+      "deviceId": "chrome",
+      "type": "dart",
+      "args": [
+        "--web-port",
+        "6543",
+        "--dart-define",
+        "API_BASE_URL=http://localhost:3004",
+        "--dart-define",
+        "SKIP_EMAIL_VERIFY=true"
+      ]
+    },
+    {
+      "name": "Chrome ( dev-api )",
+      "program": "lib/main.dart",
+      "request": "launch",
+      "deviceId": "chrome",
+      "type": "dart",
+      "args": [
+        "--web-port",
+        "6543",
+        "--dart-define",
+        "API_BASE_URL=https://a74pkq7xqa.execute-api.ap-northeast-1.amazonaws.com/new-dev"
+      ]
+    },
+    {
+      "name": "Chrome ( stage-api )",
+      "program": "lib/main.dart",
+      "request": "launch",
+      "deviceId": "chrome",
+      "type": "dart",
+      "args": [
+        "--web-port",
+        "6543",
+        "--dart-define",
+        "API_BASE_URL=https://z6e7rcesq1.execute-api.ap-northeast-1.amazonaws.com/new-stage"
+      ]
+    },
+    {
+      "name": "Android emulator ( local-api )",
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "emulator-5554",
+      "args": [
+        "--dart-define",
+        "API_BASE_URL=http://10.0.2.2:3004"
+      ]
+    },
+    {
+      "name": "Android emulator ( dev-api )",
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "emulator-5554",
+      "args": [
+        "--dart-define",
+        "API_BASE_URL=https://a74pkq7xqa.execute-api.ap-northeast-1.amazonaws.com/new-dev"
+      ]
+    },
+    {
+      "name": "Android emulator ( stage-api )",
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "emulator-5554",
+      "args": [
+        "--dart-define",
+        "API_BASE_URL=https://z6e7rcesq1.execute-api.ap-northeast-1.amazonaws.com/new-stage"
+      ]
+    },
+    {
+      "name": "Android device( local-api )",
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "b6213db1",
+      "args": [
+        "--dart-define",
+        "API_BASE_URL=http://192.168.1.111:3004"
+      ]
+    },
+    {
+      "name": "Android device ( dev-api )",
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "b6213db1",
+      "args": [
+        "--dart-define",
+        "API_BASE_URL=https://a74pkq7xqa.execute-api.ap-northeast-1.amazonaws.com/new-dev"
+      ]
+    },
+    {
+      "name": "Android device ( stage-api )",
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "b6213db1",
+      "args": [
+        "--dart-define",
+        "API_BASE_URL=https://z6e7rcesq1.execute-api.ap-northeast-1.amazonaws.com/new-stage"
+      ]
+    },
+    {
+      "name": "iPhone 7樓大隻 ( local-api )",
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "4278c7fc4146e3183c21c483e41e6af4c3c9c9d5",
+      "args": [
+        "--dart-define",
+        "API_BASE_URL=http://192.168.1.111:3004"
+      ]
+    },
+    {
+      "name": "iPhone 7樓大隻 ( dev-api )",
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "4278c7fc4146e3183c21c483e41e6af4c3c9c9d5",
+      "args": [
+        "--dart-define",
+        "API_BASE_URL=https://a74pkq7xqa.execute-api.ap-northeast-1.amazonaws.com/new-dev"
+      ]
+    },
+    {
+      "name": "iPhone 7樓大隻 ( stage-api )",
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "4278c7fc4146e3183c21c483e41e6af4c3c9c9d5",
+      "args": [
+        "--dart-define",
+        "API_BASE_URL=https://z6e7rcesq1.execute-api.ap-northeast-1.amazonaws.com/new-stage"
+      ]
+    },
+    {
+      "name": "iPhone 12 simulator ( local-api )",
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "BD578326-FB72-4AB5-B2D1-816EF130E10F",
+      "args": [
+        "--dart-define",
+        "API_BASE_URL=http://localhost:3004"
+      ]
+    },
+    {
+      "name": "iPhone 13 simulator ( local-api )",
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "F751B78F-E799-4BF8-B44F-56B7CA6D48FA",
+      "args": [
+        "--dart-define",
+        "API_BASE_URL=http://localhost:3004"
+      ]
+    },
+    {
+      "name": "iPhone 13 simulator ( dev-api )",
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "F751B78F-E799-4BF8-B44F-56B7CA6D48FA",
+      "args": [
+        "--dart-define",
+        "API_BASE_URL=https://a74pkq7xqa.execute-api.ap-northeast-1.amazonaws.com/new-dev"
+      ]
+    },
+    {
+      "name": "iPhone 13 simulator ( stage-api )",
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "F751B78F-E799-4BF8-B44F-56B7CA6D48FA",
+      "args": [
+        "--dart-define",
+        "API_BASE_URL=https://z6e7rcesq1.execute-api.ap-northeast-1.amazonaws.com/new-stage"
+      ]
+    },
+    {
+      "name": "Integration Tests: Launch Driver",
+      "request": "launch",
+      "type": "dart",
+      "program": "integration_test/app_test.dart",
+    },
+  ]
+}
