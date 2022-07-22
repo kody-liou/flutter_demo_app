@@ -4,10 +4,29 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class Page {
+  const Page(this.subtreeKey, {required this.child});
 
-  // This widget is the root of your application.
+  final GlobalKey subtreeKey;
+  final Widget child;
+}
+
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  var _pageIndex = 1;
+
+  final _pages = [
+    Page(GlobalKey(), child: const Text('Hi')),
+    Page(GlobalKey(), child: const Counter()),
+  ];
+
+  final _builtPages = List<bool>.generate(2, (_) => false);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -25,106 +44,93 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.dark,
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: Scaffold(
+        extendBody: _pageIndex == 1,
+        appBar: AppBar(),
+        body: Stack(
+          fit: StackFit.expand,
+          children: _pages.map(
+            (page) {
+              return _buildPage(
+                _pages.indexOf(page),
+                page,
+              );
+            },
+          ).toList(),
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Goto 0',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.business),
+              label: 'Goto 1',
+            ),
+          ],
+          currentIndex: _pageIndex,
+          onTap: (int index) {
+            setState(() {
+              _pageIndex = index;
+            });
+            debugPrint("idx " + _pageIndex.toString());
+          },
+        ),
+      ),
     );
   }
-}
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+  Widget _buildPage(
+    int tabIndex,
+    Page page,
+  ) {
+    final isCurrentlySelected = tabIndex == _pageIndex;
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
+    _builtPages[tabIndex] = isCurrentlySelected || _builtPages[tabIndex];
 
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
+    final Widget view = KeyedSubtree(
+      key: page.subtreeKey,
+      child: _builtPages[tabIndex] ? page.child : Container(),
+    );
 
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  List<Widget> tiles = [];
-
-  void swapTiles() {
-    setState(() {
-      tiles.insert(tiles.length - 1, tiles.removeAt(0));
-    });
+    if (tabIndex == _pageIndex) {
+      return view;
+    } else {
+      return Offstage(child: view);
+    }
   }
+}
+
+class Counter extends StatefulWidget {
+  const Counter({Key? key}) : super(key: key);
+  @override
+  _CounterState createState() => _CounterState();
+}
+
+//this part is not important, just to show that state is lost
+class _CounterState extends State<Counter> {
+  int _count = 0;
 
   @override
   void initState() {
-    tiles = [
-      // const StatelessTile(color: Colors.blue),
-      // const StatelessTile(),
-      const StatefulTile(color: Colors.red),
-      const StatefulTile(color: Colors.pink),
-    ];
+    _count = 0;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: SizedBox(height: 30, child: Row(children: tiles)),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: swapTiles,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
-  }
-}
-
-class StatelessTile extends StatelessWidget {
-  const StatelessTile({Key? key, this.color = Colors.white}) : super(key: key);
-  final Color color;
-  @override
-  Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 1,
-      child: Container(
-        color: color,
-      ),
-    );
-  }
-}
-
-class StatefulTile extends StatefulWidget {
-  const StatefulTile({Key? key, this.color = Colors.white}) : super(key: key);
-  final Color color;
-
-  @override
-  _StatefulTileState createState() => _StatefulTileState();
-}
-
-class _StatefulTileState extends State<StatefulTile> {
-  @override
-  Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 1,
-      child: Container(
-        color: widget.color,
+    return Center(
+      child: TextButton(
+        child: Text(
+          "Count: " + _count.toString(),
+          style: const TextStyle(fontSize: 20),
+        ),
+        onPressed: () {
+          setState(() {
+            _count++;
+          });
+        },
       ),
     );
   }
