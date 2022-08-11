@@ -21,8 +21,8 @@ class _MyAppState extends State<MyApp> {
   var _pageIndex = 1;
 
   final _pages = [
-    Page(GlobalKey(), child: const Text('Hi')),
-    Page(GlobalKey(), child: const Counter()),
+    Text('Hi', key: GlobalKey(debugLabel: 'ha')),
+    Counter(key: GlobalKey()),
   ];
 
   final _builtPages = List<bool>.generate(2, (_) => false);
@@ -47,17 +47,7 @@ class _MyAppState extends State<MyApp> {
       home: Scaffold(
         extendBody: _pageIndex == 1,
         appBar: AppBar(),
-        body: Stack(
-          fit: StackFit.expand,
-          children: _pages.map(
-            (page) {
-              return _buildPage(
-                _pages.indexOf(page),
-                page,
-              );
-            },
-          ).toList(),
-        ),
+        body: Stack(fit: StackFit.expand, children: _pages),
         bottomNavigationBar: BottomNavigationBar(
           items: const [
             BottomNavigationBarItem(
@@ -79,26 +69,6 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
     );
-  }
-
-  Widget _buildPage(
-    int tabIndex,
-    Page page,
-  ) {
-    final isCurrentlySelected = tabIndex == _pageIndex;
-
-    _builtPages[tabIndex] = isCurrentlySelected || _builtPages[tabIndex];
-
-    final Widget view = KeyedSubtree(
-      key: page.subtreeKey,
-      child: _builtPages[tabIndex] ? page.child : Container(),
-    );
-
-    if (tabIndex == _pageIndex) {
-      return view;
-    } else {
-      return Offstage(child: view);
-    }
   }
 }
 
