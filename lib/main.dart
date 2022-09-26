@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -60,10 +62,10 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     tiles = [
-      // const StatelessTile(color: Colors.blue),
-      // const StatelessTile(),
-      const StatefulTile(color: Colors.red),
-      const StatefulTile(color: Colors.pink),
+      const StatefulTile(key: Key('1')),
+      const StatefulTile(key: Key('a')),
+      // StatelessColorfulTile(),
+      // StatelessColorfulTile(),
     ];
     super.initState();
   }
@@ -96,36 +98,46 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class StatelessTile extends StatelessWidget {
-  const StatelessTile({Key? key, this.color = Colors.white}) : super(key: key);
-  final Color color;
+class StatelessColorfulTile extends StatelessWidget {
+  StatelessColorfulTile({Key? key}) : super(key: key);
+  final Color myColor = UniqueColorGenerator.getColor();
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 1,
-      child: Container(
-        color: color,
-      ),
-    );
+    return Container(
+        color: myColor, child: const Padding(padding: EdgeInsets.all(70.0)));
   }
 }
 
 class StatefulTile extends StatefulWidget {
-  const StatefulTile({Key? key, this.color = Colors.white}) : super(key: key);
-  final Color color;
+  const StatefulTile({Key? key}) : super(key: key);
 
   @override
   _StatefulTileState createState() => _StatefulTileState();
 }
 
 class _StatefulTileState extends State<StatefulTile> {
+  late Color myColor;
+  @override
+  void initState() {
+    super.initState();
+    myColor = UniqueColorGenerator.getColor();
+  }
+
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
       aspectRatio: 1,
       child: Container(
-        color: widget.color,
+        color: myColor,
       ),
     );
+  }
+}
+
+class UniqueColorGenerator {
+  static Random random = Random();
+  static Color getColor() {
+    return Color.fromARGB(
+        255, random.nextInt(255), random.nextInt(255), random.nextInt(255));
   }
 }
