@@ -1,13 +1,47 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_demo_app/helpers/create_file_from_asset.dart';
+import 'package:flutter_demo_app/widgets/file_gallery.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const MyWidget());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class MyWidget extends StatefulWidget {
+  const MyWidget({super.key});
 
-  // This widget is the root of your application.
+  @override
+  State<MyWidget> createState() => _MyWidgetState();
+}
+
+class _MyWidgetState extends State<MyWidget> {
+  List<File> files = [];
+  Future<void> init() async {
+    final file1 = await createFileFromAsset('assets/images/dog1.jpg');
+    final file2 = await createFileFromAsset('assets/images/dog2.jpg');
+    setState(() {
+      files = [
+        file1,
+        file2,
+        file1,
+        file2,
+        file1,
+        file2,
+        file1,
+        file2,
+        file1,
+        file2
+      ];
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    init();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -25,7 +59,9 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.dark,
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: FileGallery(
+        files: files,
+      ),
     );
   }
 }
