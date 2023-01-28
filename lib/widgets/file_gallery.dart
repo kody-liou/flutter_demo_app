@@ -40,20 +40,13 @@ class _GalleryViewState extends State<GalleryView> {
                 final Offset localPosition =
                     box.globalToLocal(details.globalPosition);
                 final int newIndex =
-                    (localPosition.dy ~/ (box.size.height / 3)).clamp(0, 2) *
-                            3 +
-                        (localPosition.dx ~/ (box.size.width / 3)).clamp(0, 2);
-                if (newIndex != endIndex) {
+                    (localPosition.dy ~/ (box.size.height / 3)) * 3 +
+                        (localPosition.dx ~/ (box.size.width / 3));
+                if (newIndex != endIndex && newIndex < 6) {
                   setState(() {
                     endIndex = newIndex;
-                    if (newIndex > endIndex) {
-                      for (int i = endIndex + 1; i <= newIndex; i++) {
-                        selected[i] = true;
-                      }
-                    } else {
-                      for (int i = newIndex; i < endIndex; i++) {
-                        selected[i] = true;
-                      }
+                    for (int i = startIndex; i <= endIndex; i++) {
+                      selected[i] = true;
                     }
                   });
                 }
