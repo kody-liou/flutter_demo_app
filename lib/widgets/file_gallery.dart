@@ -1,80 +1,74 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 
-class FileGallery extends StatefulWidget {
-  final List<File> files;
-
-  const FileGallery({super.key, required this.files});
-
+class GalleryView extends StatefulWidget {
   @override
-  _FileGalleryState createState() => _FileGalleryState();
+  _GalleryViewState createState() => _GalleryViewState();
 }
 
-class _FileGalleryState extends State<FileGallery> {
-  final Set<File> _selectedFiles = {};
+class _GalleryViewState extends State<GalleryView> {
+  List<Color> colors = [
+    Colors.red,
+    Colors.orange,
+    Colors.yellow,
+    Colors.green,
+    Colors.blue,
+    Colors.purple
+  ];
+  List<bool> selected = List.filled(6, false);
+
+  int startIndex = -1;
+  int endIndex = -1;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("File Gallery"),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.check),
-            onPressed: () {
-              // Do something with the selected files
+    return Container(
+      child: GridView.count(
+        crossAxisCount: 3,
+        children: List.generate(6, (index) {
+          return GestureDetector(
+            onPanStart: (DragStartDetails details) {
+              setState(() {
+                startIndex = index;
+                endIndex = index;
+                selected[index] = true;
+              });
             },
-          ),
-        ],
-      ),
-      body: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          childAspectRatio: 1,
-        ),
-        itemCount: widget.files.length,
-        itemBuilder: (BuildContext context, int index) {
-          File file = widget.files[index];
-          return Stack(
-            children: <Widget>[
-              // Image preview
-              Positioned.fill(
-                child: Image.file(
-                  file,
-                  fit: BoxFit.cover,
-                ),
+            onPanUpdate: (DragUpdateDetails details) {
+              final obj = context.findRenderObject();
+              if (obj is RenderBox) {
+                final RenderBox box = obj;
+                final Offset localPosition =
+                    box.globalToLocal(details.globalPosition);
+                final int newIndex =
+                    (localPosition.dy ~/ (box.size.height / 3)).clamp(0, 2) *
+                            3 +
+                        (localPosition.dx ~/ (box.size.width / 3)).clamp(0, 2);
+                if (newIndex != endIndex) {
+                  setState(() {
+                    endIndex = newIndex;
+                    for (int i = startIndex; i <= endIndex; i++) {
+                      selected[i] = true;
+                    }
+                  });
+                }
+              }
+            },
+            onPanEnd: (DragEndDetails details) {
+              setState(() {
+                startIndex = -1;
+                endIndex = -1;
+              });
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: colors[index],
+                border: selected[index]
+                    ? Border.all(color: Colors.red, width: 2)
+                    : Border.all(color: Colors.transparent, width: 2),
               ),
-              // Selection overlay
-              Positioned.fill(
-                child: _selectedFiles.contains(file)
-                    ? Container(
-                        color: Colors.black12,
-                        child: Icon(
-                          Icons.check,
-                          color: Colors.white,
-                          size: 40,
-                        ),
-                      )
-                    : Container(),
-              ),
-              // Gesture detector
-              Positioned.fill(
-                child: GestureDetector(
-                  onLongPress: () {
-                    setState(() {
-                      _selectedFiles.add(file);
-                    });
-                  },
-                  onLongPressEnd: (details) {
-                    setState(() {
-                      _selectedFiles.remove(file);
-                    });
-                  },
-                ),
-              ),
-            ],
+            ),
           );
-        },
+        }),
       ),
     );
   }

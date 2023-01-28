@@ -59,9 +59,7 @@ class _MyWidgetState extends State<MyWidget> {
         brightness: Brightness.dark,
         primarySwatch: Colors.blue,
       ),
-      home: FileGallery(
-        files: files,
-      ),
+      home: GalleryView(),
     );
   }
 }
