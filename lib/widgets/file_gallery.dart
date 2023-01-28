@@ -26,7 +26,7 @@ class _GalleryViewState extends State<GalleryView> {
         crossAxisCount: 3,
         children: List.generate(6, (index) {
           return GestureDetector(
-            onPanStart: (DragStartDetails details) {
+            onPanDown: (DragDownDetails details) {
               setState(() {
                 startIndex = index;
                 endIndex = index;
@@ -46,20 +46,24 @@ class _GalleryViewState extends State<GalleryView> {
                 if (newIndex != endIndex) {
                   setState(() {
                     endIndex = newIndex;
-                    // Clear the previously selected blocks
-                    for (int i = 0; i < selected.length; i++) {
-                      selected[i] = false;
-                    }
-                    // Select all blocks between start and end indexes
-                    for (int i = startIndex; i <= endIndex; i++) {
-                      selected[i] = true;
+                    if (newIndex > endIndex) {
+                      for (int i = endIndex + 1; i <= newIndex; i++) {
+                        selected[i] = true;
+                      }
+                    } else {
+                      for (int i = newIndex; i < endIndex; i++) {
+                        selected[i] = true;
+                      }
                     }
                   });
                 }
               }
             },
             onPanEnd: (DragEndDetails details) {
-              // Do nothing here
+              setState(() {
+                startIndex = -1;
+                endIndex = -1;
+              });
             },
             child: Container(
               decoration: BoxDecoration(
