@@ -2,10 +2,9 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Chrome",
+      "name": "local",
       "program": "lib/main.dart",
       "request": "launch",
-      "deviceId": "chrome",
       "type": "dart",
       "args": [
         "--web-port",
