@@ -46,6 +46,11 @@ class _GalleryViewState extends State<GalleryView> {
                 if (newIndex != endIndex) {
                   setState(() {
                     endIndex = newIndex;
+                    // Clear the previously selected blocks
+                    for (int i = 0; i < selected.length; i++) {
+                      selected[i] = false;
+                    }
+                    // Select all blocks between start and end indexes
                     for (int i = startIndex; i <= endIndex; i++) {
                       selected[i] = true;
                     }
@@ -54,10 +59,7 @@ class _GalleryViewState extends State<GalleryView> {
               }
             },
             onPanEnd: (DragEndDetails details) {
-              setState(() {
-                startIndex = -1;
-                endIndex = -1;
-              });
+              // Do nothing here
             },
             child: Container(
               decoration: BoxDecoration(
